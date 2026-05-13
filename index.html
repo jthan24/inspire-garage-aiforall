@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Misión: Permiso Mundialista - Google Docs Game</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Roboto', sans-serif; background-color: #f8f9fa; }
+        .docs-shadow { box-shadow: 0 1px 3px rgba(60,64,67,0.3), 0 4px 8px 3px rgba(60,64,67,0.15); }
+        .checkpoint-active { border-color: #1a73e8; background-color: #e8f0fe; color: #1a73e8; }
+        .checkpoint-done { background-color: #34a853; color: white; border-color: #34a853; }
+        #editor:focus { outline: none; }
+        .ball-animation { animation: bounce 2s infinite; }
+        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+    </style>
+</head>
+<body class="h-screen flex flex-col">
+
+    <header class="bg-white border-b border-gray-300 p-2 flex items-center justify-between px-6">
+        <div class="flex items-center gap-4">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/0/01/Google_Docs_logo_%282014-2020%29.svg" width="35" alt="Logo">
+            <div>
+                <h1 class="text-xl font-medium text-gray-700">Misión: Permiso Mundialista 🏆</h1>
+                <div class="flex gap-4 text-xs text-blue-600">
+                    <span class="cursor-pointer hover:underline">Archivo</span>
+                    <span class="cursor-pointer hover:underline">Editar</span>
+                    <span class="cursor-pointer hover:underline">Ver</span>
+                    <span class="cursor-pointer hover:underline">Insertar</span>
+                </div>
+            </div>
+        </div>
+        <div class="flex items-center gap-4">
+            <div id="progress-bar" class="w-48 bg-gray-200 rounded-full h-2.5">
+                <div id="progress-fill" class="bg-green-500 h-2.5 rounded-full transition-all duration-500" style="width: 5%"></div>
+            </div>
+            <button class="bg-[#1a73e8] text-white px-6 py-2 rounded-full font-medium hover:bg-blue-700 transition">Compartir</button>
+        </div>
+    </header>
+
+    <main class="flex-1 flex overflow-hidden">
+        
+        <aside class="w-80 bg-white border-r border-gray-300 p-6 overflow-y-auto">
+            <h2 class="text-lg font-bold mb-4 flex items-center gap-2">
+                Checkpoints 🚩
+            </h2>
+            <div id="checkpoints-list" class="space-y-4">
+                <div id="cp1" class="p-3 border-2 rounded-lg checkpoint-active transition-all">
+                    <p class="font-bold">1. El Grito Inicial</p>
+                    <p class="text-sm">Escribe al menos 50 caracteres explicando tu urgencia por ver el Mundial.</p>
+                </div>
+                <div id="cp2" class="p-3 border-2 rounded-lg text-gray-400 border-gray-100">
+                    <p class="font-bold">2. El Título del Campeón</p>
+                    <p class="text-sm">Escribe la palabra "SOLICITUD" en mayúsculas y ponla en negrita.</p>
+                </div>
+                <div id="cp3" class="p-3 border-2 rounded-lg text-gray-400 border-gray-100">
+                    <p class="font-bold">3. El Enlace Estratégico</p>
+                    <p class="text-sm">Pega un enlace (URL) de algún video de jugadas para convencerlos.</p>
+                </div>
+                <div id="cp4" class="p-3 border-2 rounded-lg text-gray-400 border-gray-100">
+                    <p class="font-bold">4. Táctica en Tabla</p>
+                    <p class="text-sm">Crea una tabla de compromisos (Haz clic en el botón de tabla abajo).</p>
+                </div>
+                <div id="cp5" class="p-3 border-2 rounded-lg text-gray-400 border-gray-100">
+                    <p class="font-bold">5. Firma Digital</p>
+                    <p class="text-sm">Firma tu documento en el recuadro final para hacerlo oficial.</p>
+                </div>
+            </div>
+        </aside>
+
+        <section class="flex-1 overflow-y-auto p-10 flex justify-center">
+            <div class="w-[800px] min-h-[1056px] bg-white docs-shadow p-20 flex flex-col relative">
+                <div class="absolute top-4 left-1/2 -translate-x-1/2 flex gap-4 bg-blue-50 p-2 rounded-lg border border-blue-100 mb-6">
+                    <button onclick="execCmd('bold')" class="font-bold px-2 hover:bg-blue-200">B</button>
+                    <button onclick="execCmd('italic')" class="italic px-2 hover:bg-blue-200">I</button>
+                    <button onclick="insertTable()" class="px-2 hover:bg-blue-200">📊 Tabla</button>
+                </div>
+
+                <div id="editor" contenteditable="true" class="flex-1 mt-10 text-lg leading-relaxed text-gray-800">
+                    Empieza a escribir aquí tu carta para el profesor o tus padres...
+                </div>
+
+                <div id="signature-area" class="hidden mt-10 border-t-2 border-dashed border-gray-300 pt-4 text-center">
+                    <p class="text-xs text-gray-400 mb-2 italic">Firma aquí (Usa el mouse o dedo)</p>
+                    <canvas id="sig-canvas" width="300" height="100" class="border border-gray-200 mx-auto cursor-crosshair bg-gray-50"></canvas>
+                    <button onclick="finishGame()" class="mt-4 bg-green-500 text-white px-4 py-1 rounded">Finalizar Trámite</button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        let currentStep = 1;
+        const editor = document.getElementById('editor');
+
+        // Lógica de detección de escritura
+        editor.addEventListener('input', () => {
+            const text = editor.innerText;
+
+            // CP 1: Longitud
+            if (currentStep === 1 && text.length > 50) {
+                completeCheckpoint(1, 2);
+            }
+
+            // CP 2: Negrita + SOLICITUD
+            if (currentStep === 2) {
+                const hasBold = document.queryCommandState('bold');
+                if (text.includes("SOLICITUD") && hasBold) {
+                    completeCheckpoint(2, 3);
+                }
+            }
+
+            // CP 3: URL
+            if (currentStep === 3) {
+                const urlRegex = /(https?:\/\/[^\s]+)/;
+                if (urlRegex.test(text)) {
+                    completeCheckpoint(3, 4);
+                }
+            }
+        });
+
+        function completeCheckpoint(id, next) {
+            const currentEl = document.getElementById(`cp${id}`);
+            currentEl.classList.remove('checkpoint-active');
+            currentEl.classList.add('checkpoint-done');
+            currentEl.innerHTML += " ✅";
+
+            confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+
+            if (next <= 5) {
+                const nextEl = document.getElementById(`cp${next}`);
+                nextEl.classList.add('checkpoint-active');
+                currentStep = next;
+                updateProgress(next);
+            }
+
+            if(id === 4) {
+                document.getElementById('signature-area').classList.remove('hidden');
+            }
+        }
+
+        function updateProgress(step) {
+            const fill = document.getElementById('progress-fill');
+            fill.style.width = `${step * 20}%`;
+        }
+
+        function execCmd(cmd) {
+            document.execCommand(cmd, false, null);
+        }
+
+        function insertTable() {
+            if (currentStep === 4) {
+                const tableHtml = `<table class="w-full border-collapse border border-gray-400 my-4">
+                    <tr><th class="border border-gray-400 p-2">Materia/Tarea</th><th class="border border-gray-400 p-2">Compromiso</th></tr>
+                    <tr><td class="border border-gray-400 p-2">Matemáticas</td><td class="border border-gray-400 p-2">Estudiar doble</td></tr>
+                </table><p><br></p>`;
+                document.execCommand('insertHTML', false, tableHtml);
+                completeCheckpoint(4, 5);
+            } else {
+                alert("Primero completa los retos anteriores ⚽");
+            }
+        }
+
+        // Lógica de Firma Canvas
+        const canvas = document.getElementById('sig-canvas');
+        const ctx = canvas.getContext('2d');
+        let drawing = false;
+
+        canvas.addEventListener('mousedown', () => drawing = true);
+        canvas.addEventListener('mouseup', () => drawing = false);
+        canvas.addEventListener('mousemove', (e) => {
+            if (!drawing) return;
+            ctx.lineWidth = 2;
+            ctx.lineCap = 'round';
+            ctx.strokeStyle = '#1a73e8';
+            ctx.lineTo(e.offsetX, e.offsetY);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(e.offsetX, e.offsetY);
+        });
+
+        function finishGame() {
+            confetti({ particleCount: 400, spread: 150 });
+            alert("¡FELICIDADES! Tu permiso ha sido generado. Ahora descárgalo o compártelo con tu profesor.");
+        }
+    </script>
+</body>
+</html>
