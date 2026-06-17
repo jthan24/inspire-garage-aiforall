@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Talleres Prácticos: IA Creativa (Avatares y Video)</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <style>
+        :root {
+            --bg-dark: #070a13;
+            --bg-card: #0f172a;
+            --neon-blue: #00d2ff;
+            --neon-green: #39ff14;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --border-color: #1e293b;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-primary);
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 40px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            max-width: 1100px;
+            width: 100%;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 50px;
+            border-bottom: 2px dashed var(--border-color);
+            padding-bottom: 30px;
+        }
+
+        h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 38px;
+            background: linear-gradient(90deg, var(--neon-blue), var(--neon-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .subtitle {
+            color: var(--text-secondary);
+            font-size: 18px;
+            font-weight: 300;
+        }
+
+        .grid-practices {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 40px;
+        }
+
+        .practice-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 35px;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0, 210, 255, 0.05);
+            transition: border-color 0.3s;
+        }
+
+        .practice-card:hover {
+            border-color: var(--neon-blue);
+        }
+
+        .badge {
+            position: absolute;
+            top: 25px;
+            right: 35px;
+            background: rgba(0, 210, 255, 0.1);
+            border: 1px solid var(--neon-blue);
+            color: var(--neon-blue);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 12px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .badge.video {
+            background: rgba(57, 255, 20, 0.1);
+            border: 1px solid var(--neon-green);
+            color: var(--neon-green);
+        }
+
+        h2 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 24px;
+            color: var(--text-primary);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        h2 i {
+            color: var(--neon-blue);
+        }
+
+        .practice-card:nth-child(even) h2 i {
+            color: var(--neon-green);
+        }
+
+        p.meta {
+            color: var(--text-secondary);
+            font-size: 14px;
+            margin-bottom: 25px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 15px;
+        }
+
+        .section-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 14px;
+            color: var(--neon-blue);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 20px;
+            margin-bottom: 8px;
+        }
+
+        .practice-card:nth-child(even) .section-title {
+            color: var(--neon-green);
+        }
+
+        ol, ul {
+            padding-left: 20px;
+            margin-bottom: 15px;
+        }
+
+        li {
+            color: var(--text-secondary);
+            font-size: 15px;
+            line-height: 1.6;
+            margin-bottom: 8px;
+        }
+
+        li strong {
+            color: var(--text-primary);
+        }
+
+        .code-box {
+            background-color: #03060f;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 12px 18px;
+            font-family: 'Courier New', Courier, monospace;
+            color: var(--neon-green);
+            font-size: 13px;
+            margin: 10px 0;
+            overflow-x: auto;
+        }
+
+        .tips {
+            background: rgba(255, 255, 255, 0.02);
+            border-left: 4px solid var(--neon-blue);
+            padding: 15px;
+            border-radius: 0 8px 8px 0;
+            margin-top: 20px;
+        }
+
+        .practice-card:nth-child(even) .tips {
+            border-left-color: var(--neon-green);
+        }
+
+        .tips p {
+            margin: 0;
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>Talleres de IA Creativa</h1>
+            <p class="subtitle">Guía de Prácticas de Laboratorio para Presentaciones Académicas</p>
+        </header>
+
+        <div class="grid-practices">
+
+            <!-- PRÁCTICA 1: AVATARES -->
+            <div class="practice-card">
+                <span class="badge">Avatar</span>
+                <h2><i class="fa-solid fa-graduation-cap"></i> Práctica 1: Síntesis de Presentador Inteligente en Google Vids</h2>
+                <p class="meta"><strong>Duración:</strong> 15 minutos | <strong>Enfoque:</strong> Flujo académico integrado | <strong>Nivel:</strong> Básico-Intermedio</p>
+                
+                <div class="section-title">Objetivo</div>
+                <p style="color: var(--text-secondary); font-size:15px; margin-bottom:15px;">Aprender a delegar la narración de contenidos complejos a un presentador sintético directamente en el ecosistema colaborativo de Google Workspace.</p>
+
+                <div class="section-title">Requisitos</div>
+                <ul>
+                    <li>Cuenta institucional de Google Workspace con acceso habilitado a <strong>Google Vids</strong>.</li>
+                    <li>Un documento de texto corto de Google Docs (1 párrafo de contenido educativo).</li>
+                </ul>
+
+                <div class="section-title">Paso a Paso de Ejecución</div>
+                <ol>
+                    <li><strong>Crear el espacio:</strong> Ingresa a tu Google Drive, haz clic en <strong>Nuevo &gt; Google Vids</strong> (o ve directamente a <code style="color: var(--neon-blue)">vids.new</code>).</li>
+                    <li><strong>Asistente inicial:</strong> Selecciona la opción <em>"Ayúdame a crear un video"</em> (Help me create a video).</li>
+                    <li><strong>Prompting de estructura:</strong> Escribe una instrucción detallando el tema. Por ejemplo: 
+                        <div class="code-box">Crea un video educativo de 1 slide que resuma el concepto de "Espacio Latente en IA" usando un tono formal académico.</div>
+                    </li>
+                    <li><strong>Insertar Presentador Virtual:</strong> En la barra lateral de edición, haz clic en la herramienta de <strong>Insertar &gt; Presentador de IA (Avatar)</strong>.</li>
+                    <li><strong>Personalización:</strong> Selecciona el estilo visual del avatar que mejor se adapte al entorno universitario, elige la pista de voz en español y el idioma de salida de la narración.</li>
+                    <li><strong>Render y Revisión:</strong> Vincula el párrafo de tu Google Doc al cuadro de diálogo del avatar y presiona "Vista previa" para analizar la coordinación del habla.</li>
+                </ol>
+
+                <div class="tips">
+                    <p><strong><i class="fa-solid fa-lightbulb"></i> Consejo Académico:</strong> Compara la entonación que realiza la IA en palabras técnicas (como 'Algorítmico' o 'Espacio Vectorial') para discutir la madurez actual de la síntesis del habla.</p>
+                </div>
+            </div>
+
+            <!-- PRÁCTICA 2: AVATARES -->
+            <div class="practice-card">
+                <span class="badge">Avatar</span>
+                <h2><i class="fa-solid fa-user-gear"></i> Práctica 2: Clonación y Sincronización Labial (Lip-Sync) en HeyGen</h2>
+                <p class="meta"><strong>Duración:</strong> 20 minutos | <strong>Enfoque:</strong> Expresión y realismo microfacial | <strong>Nivel:</strong> Intermedio</p>
+                
+                <div class="section-title">Objetivo</div>
+                <p style="color: var(--text-secondary); font-size:15px; margin-bottom:15px;">Generar un avatar fotorrealista capaz de gesticular con precisión física y simular un discurso académico en múltiples idiomas.</p>
+
+                <div class="section-title">Requisitos</div>
+                <ul>
+                    <li>Registro en <code style="color: var(--neon-blue)">HeyGen.com</code> (versión gratuita de prueba).</li>
+                    <li>Una fotografía de retrato frontal de alta resolución (preferentemente con fondo neutro).</li>
+                </ul>
+
+                <div class="section-title">Paso a Paso de Ejecución</div>
+                <ol>
+                    <li><strong>Creación del Avatar:</strong> Inicia sesión en HeyGen, dirígete al menú izquierdo y selecciona <strong>Avatar &gt; Photo Avatar</strong>. Subir tu fotografía de retrato.</li>
+                    <li><strong>Redacción del Script:</strong> En la sección del editor de texto inferior, escribe un mensaje de bienvenida. Ejemplo:
+                        <div class="code-box">Estimados estudiantes, bienvenidos al módulo de IA Creativa. Hoy analizaremos el funcionamiento de las redes neuronales generativas.</div>
+                    </li>
+                    <li><strong>Clonación de Voz:</strong> Selecciona el idioma (Español) y busca una voz neuronal que ofrezca modulación natural y velocidad ajustable.</li>
+                    <li><strong>Prueba Multilingüe:</strong> Traduce el mismo script al inglés o alemán usando el traductor automático integrado de la plataforma para verificar la consistencia labial.</li>
+                    <li><strong>Generación:</strong> Haz clic en <strong>Submit</strong> para procesar el video de 10-15 segundos.</li>
+                </ol>
+
+                <div class="tips">
+                    <p><strong><i class="fa-solid fa-lightbulb"></i> Análisis de Clase:</strong> Observa las esquinas de los labios y el parpadeo del avatar generado. ¿Logra romper el efecto del 'valle inquietante' (uncanny valley)?</p>
+                </div>
+            </div>
+
+            <!-- PRÁCTICA 3: VIDEO -->
+            <div class="practice-card">
+                <span class="badge video">Video</span>
+                <h2><i class="fa-solid fa-video"></i> Práctica 3: Generación Cinemática Controlada mediante Runway Gen-3</h2>
+                <p class="meta"><strong>Duración:</strong> 20 minutos | <strong>Enfoque:</strong> Prompt Engineering de Video | <strong>Nivel:</strong> Intermedio-Avanzado</p>
+                
+                <div class="section-title">Objetivo</div>
+                <p style="color: var(--text-secondary); font-size:15px; margin-bottom:15px;">Utilizar la ingeniería de instrucciones avanzada para dirigir cámaras virtuales y recrear simulaciones físicas realistas sin usar cámaras reales.</p>
+
+                <div class="section-title">Requisitos</div>
+                <ul>
+                    <li>Cuenta activa en <code style="color: var(--neon-green)">RunwayML.com</code> con créditos para Gen-3 Alpha.</li>
+                </ul>
+
+                <div class="section-title">Paso a Paso de Ejecución</div>
+                <ol>
+                    <li><strong>Acceso a la herramienta:</strong> En el panel principal de Runway, selecciona <strong>Gen-3 Alpha: Text to Video</strong>.</li>
+                    <li><strong>Estructura del Prompt:</strong> En lugar de escribir instrucciones simples, utiliza la estructura cinemática estricta de Runway: 
+                        <code style="color:var(--neon-green)">[Movimiento de cámara] + [Sujeto/Entorno] + [Iluminación] + [Estilo visual]</code>.
+                    </li>
+                    <li><strong>Aplicación del Script de prompt:</strong> Copia y pega el siguiente prompt optimizado en la caja de texto:
+                        <div class="code-box">Slow cinematic macro pan over an organic liquid microchip. Glowing blue and green neon fluids pulsating through microscopic pathways. Real physical fluid simulation, refraction, 4k resolution, hyperrealistic.</div>
+                    </li>
+                    <li><strong>Ajustes del Modelo:</strong> Define la relación de aspecto en 16:9 y la duración inicial en 5 segundos. Mantén activado el control de coherencia de movimiento en nivel medio.</li>
+                    <li><strong>Generar y Estudiar:</strong> Presiona <strong>Generate</strong>. Analiza cómo el modelo interpreta la física de fluidos y la refracción de la luz neón.</li>
+                </ol>
+
+                <div class="tips">
+                    <p><strong><i class="fa-solid fa-lightbulb"></i> Reto Académico:</strong> Intenta alterar únicamente las palabras de movimiento de cámara (cambia "Slow cinematic macro pan" por "Fast drone shot") y observa si la consistencia interna del objeto se mantiene estable.</p>
+                </div>
+            </div>
+
+            <!-- PRÁCTICA 4: VIDEO -->
+            <div class="practice-card">
+                <span class="badge video">Video</span>
+                <h2><i class="fa-solid fa-wand-magic-sparkles"></i> Práctica 4: Creación de Bucle Espacial Coherente en Google VideoFX</h2>
+                <p class="meta"><strong>Duración:</strong> 15 minutos | <strong>Enfoque:</strong> Generación iterativa y bucle | <strong>Nivel:</strong> Básico</p>
+                
+                <div class="section-title">Objetivo</div>
+                <p style="color: var(--text-secondary); font-size:15px; margin-bottom:15px;">Diseñar bucles visuales continuos de alta coherencia espacial y estética conceptual usando modelos experimentales de Google.</p>
+
+                <div class="section-title">Requisitos</div>
+                <ul>
+                    <li>Acceso a Google Labs / Test Kitchen (<code style="color: var(--neon-green)">labs.google</code>) y la herramienta <strong>VideoFX</strong> (Powered by Google Veo).</li>
+                </ul>
+
+                <div class="section-title">Paso a Paso de Ejecución</div>
+                <ol>
+                    <li><strong>Ingresar al laboratorio:</strong> Entra a tu cuenta de Google y accede al portal de Google Labs seleccionando <strong>VideoFX</strong>.</li>
+                    <li><strong>Definición del Concepto Visual:</strong> Utilizaremos una estética abstracta para representar un concepto de inteligencia artificial de forma repetitiva.</li>
+                    <li><strong>Prompting de Bucle:</strong> Escribe el siguiente prompt enfocado en la física de partículas:
+                        <div class="code-box">Seamless loop of digital glowing nodes connecting into an abstract brain structure, sci-fi, cybernetic, cinematic lighting, 3d render.</div>
+                    </li>
+                    <li><strong>Aplicación de Estilo:</strong> Utiliza el panel de "Estilos" rápidos de VideoFX para aplicar el filtro <strong>Cyberpunk</strong> o <strong>Sci-Fi</strong> para que coincida con los colores institucionales del aula.</li>
+                    <li><strong>Análisis Temporal:</strong> Genera el clip y evalúa si el inicio y fin del clip permiten un flujo visual continuo adecuado para ser usado como fondo de una diapositiva académica.</li>
+                </ol>
+
+                <div class="tips">
+                    <p><strong><i class="fa-solid fa-lightbulb"></i> Discusión en Grupo:</strong> Compara la velocidad de procesamiento de VideoFX contra la consistencia física de Runway. ¿Cuál de ellas ofrece un mejor balance entre velocidad y precisión conceptual?</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</body>
+</html>
